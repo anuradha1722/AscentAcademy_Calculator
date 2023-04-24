@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>AscentAcademy Calculator</title>
+    <style>
+      .calculator {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 10px;
+        padding: 10px;
+        border: 1px solid black;
+        width: 200px;
+      }
+      button {
+        font-size: 20px;
+        padding: 5px;
+        border: none;
+        background-color: #59b1bc;
+        color: white;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #3e8e41;
+      }
+      #display {
+        grid-column: 1 / span 4;
+        text-align: right;
+        font-size: 24px;
+        padding: 5px;
+        background-color: #f2f2f2;
+        border: 1px solid black;
+        height: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="calculator">
+      <div id="display"></div>
+      <button id="clear">C</button>
+      <button id="backspace">←</button>
+      <button id="divide">/</button>
+      <button id="multiply">*</button>
+      <button id="seven">7</button>
+      <button id="eight">8</button>
+      <button id="nine">9</button>
+      <button id="subtract">-</button>
+      <button id="four">4</button>
+      <button id="five">5</button>
+      <button id="six">6</button>
+      <button id="add">+</button>
+      <button id="one">1</button>
+      <button id="two">2</button>
+      <button id="three">3</button>
+      <button id="equals">=</button>
+      <button id="zero">0</button>
+      <button id="decimal">.</button>
+    </div>
+
+    <script>
+      const display = document.getElementById("display");
+      const buttons = document.querySelectorAll("button");
+
+      let operand1 = "";
+      let operand2 = "";
+      let operator = null;
+      let result = null;
+
+      function clearDisplay() {
+        operand1 = "";
+        operand2 = "";
+        operator = null;
+        result = null;
+        display.textContent = "";
+      }
+
+      function deleteLastDigit() {
+        display.textContent = display.textContent.slice(0, -1);
+        if (operator === null) {
+          operand1 = display.textContent;
+        } else {
+          operand2 = display.textContent.slice(operand1.length + 1);
+        }
+      }
+
+      function calculate() {
+        switch (operator) {
+          case "+":
+            result = parseFloat(operand1) + parseFloat(operand2);
+            break;
+          case "-":
+            result = parseFloat(operand1) - parseFloat(operand2);
+            break;
+          case "*":
+            result = parseFloat(operand1) * parseFloat(operand2);
+            break;
+          case "/":
+            result = parseFloat(operand1) / parseFloat(operand2);
+            break;
+          default:
+            break;
+        }
+        display.textContent = result;
+        operand1 = result;
+        operand2 = "";
+        operator = null;
+      }
+
+      function handleClick() {
+        const button
+        = this.textContent;
+    if (button === "C") {
+      clearDisplay();
+    } else if (button === "←") {
+      deleteLastDigit();
+    } else if (button === "+" || button === "-" || button === "*" || button === "/") {
+      operator = button;
+      display.textContent += ` ${operator} `;
+    } else if (button === "=") {
+      calculate();
+    } else {
+      display.textContent += button;
+      if (operator === null) {
+        operand1 += button;
+      } else {
+        operand2 += button;
+      }
+    }
+  }
+
+  buttons.forEach((button) => {
+    button.addEventListener("click", handleClick);
+  });
+</script>
+</body>
+</html>
